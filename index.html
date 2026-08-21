@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>إلى Rahma ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #ffdde1, #f9c9d1);
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.5s;
+        }
+
+        /* قلوب متحركة في الخلفية */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .heart-bg {
+            position: absolute;
+            color: rgba(255, 105, 180, 0.5);
+            font-size: 2rem;
+            user-select: none;
+            animation: floatHeart 8s linear infinite;
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        /* شاشة التحميل */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffb6c1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: opacity 0.8s ease, visibility 0.8s;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .loading-hearts {
+            display: flex;
+            gap: 15px;
+            font-size: 3rem;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+
+        /* الصفحة الرئيسية (بعد التحميل) */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 15px 100px;
+            opacity: 1;
+            transition: opacity 0.5s;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            border-radius: 50px 50px 0 0;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+
+        /* قسم كلمة المرور */
+        .password-section {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 60px;
+            box-shadow: 0 10px 25px rgba(255,105,180,0.3);
+            transition: all 0.3s;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin: 10px auto;
+            display: block;
+        }
+
+        .profile-pic-placeholder {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: #ffb6c1;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .greeting {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #d43f6b;
+            margin: 10px 0 5px;
+        }
+
+        .sub-greeting {
+            font-size: 1.2rem;
+            color: #a64d79;
+            margin-bottom: 20px;
+            white-space: pre-line;
+        }
+
+        .password-input {
+            width: 80%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 60px;
+            background: white;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 10px 0;
+            border: 2px solid #ff99bb;
+        }
+
+        .password-btn {
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 60px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 8px 0 #b13e5c;
+            transform: translateY(0);
+            transition: 0.1s;
+            margin: 15px 0;
+            cursor: pointer;
+        }
+
+        .password-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 #b13e5c;
+        }
+
+        .error-msg {
+            color: red;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        /* المحتوى الخاص بعد كلمة السر */
+        .secret-content {
+            display: none; /* يظهر بعد إدخال كلمة السر الصحيحة */
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .secret-content.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        /* العناصر التي تظهر بالتمرير */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* تنسيق عام للبطاقات */
+        .card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 10px 20px rgba(212, 63, 107, 0.2);
+            border: 2px solid white;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        .love-text {
+            font-size: 2rem;
+            color: #d43f6b;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .name {
+            font-size: 3rem;
+            color: #ff4d6d;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        /* التايمر - تصميم جديد بوكسات منفصلة */
+        .timer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .timer-unit {
+            background: white;
+            border-radius: 20px;
+            padding: 10px;
+            min-width: 70px;
+            text-align: center;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            border: 2px solid #ff99bb;
+        }
+
+        .timer-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #b82b5e;
+        }
+
+        .timer-label-unit {
+            font-size: 0.9rem;
+            color: #a13565;
+        }
+
+        /* الكروت التفاعلية */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .flip-card {
+            background: transparent;
+            perspective: 1000px;
+            height: 150px;
+            cursor: pointer;
+        }
+
+        .flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-front, .flip-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .flip-front {
+            background: #ffb3c6;
+            color: #a1224b;
+            border: 3px solid white;
+            font-size: 1.2rem;
+        }
+
+        .flip-back {
+            background: #ff4d6d;
+            color: white;
+            transform: rotateY(180deg);
+            font-size: 1.3rem;
+            border: 3px solid white;
+        }
+
+        /* شبكة الصور - عمود واحد */
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .image-card {
+            background: #ffe6f0;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 3px solid white;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .image-caption {
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: #b82b5e;
+            font-size: 1.4rem;
+            background: white;
+            border-top: 2px dashed #ff99bb;
+        }
+
+        /* زر إظهار الرسالة الأخيرة */
+        .final-btn {
+            background: #ff8da1;
+            border: none;
+            width: 100%;
+            padding: 25px;
+            border-radius: 60px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 0 #b82b5e;
+            box-shadow: 0 10px 0 #b82b5e;
+            transform: translateY(0);
+            transition: 0.1s;
+            margin: 30px 0;
+            cursor: pointer;
+        }
+
+        .final-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 5px 0 #b82b5e;
+        }
+
+        /* الرسالة المخفية - تنسيق جديد */
+        .hidden-message {
+            background: #fff0f5;
+            border-radius: 40px;
+            padding: 30px 25px;
+            font-size: 1.6rem;
+            line-height: 2.2rem;
+            text-align: center;
+            color: #a13565;
+            border: 4px solid #ff99bb;
+            display: none;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 20px 0;
+            direction: rtl;
+        }
+
+        /* شريط الصوت */
+        .audio-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 10px;
+            border-top: 3px solid #ff99bb;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+        }
+
+        audio {
+            width: 90%;
+            max-width: 500px;
+            border-radius: 60px;
+        }
+
+        .small-note {
+            font-size: 1.2rem;
+            color: #d43f6b;
+            margin: 10px 0;
+        }
+
+        hr {
+            border: 2px dashed #ff99bb;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- قلوب الخلفية المتحركة -->
+    <div class="hearts-bg" id="heartsBg"></div>
+
+    <!-- شاشة التحميل -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-text">
+            ثواني يا رورو<br>معلش بيحمل اهو😂❤️
+        </div>
+        <div class="loading-hearts">
+            <span>❤️</span>
+            <span>🧡</span>
+            <span>💛</span>
+            <span>💚</span>
+            <span>💙</span>
+            <span>💜</span>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي يظهر بعد التحميل -->
+    <div class="main-content" id="mainContent" style="opacity:0;">
+        <!-- قسم كلمة المرور والصورة -->
+        <div class="password-section" id="passwordSection">
+            <!-- صورة دائرية (ضع رابط الصورة هنا) -->
+            <img src="https://i.supaimg.com/b3e8f798-2580-4a43-b860-7c71abdf9fbd/594114b8-ad8f-4854-841c-ca4a3eb6373c.jpg" class="profile-pic" alt="صورة الملف الشخصي">
+            <!-- نص تحت الصورة -->
+            <div class="greeting">جاهزه🤔</div>
+            <div class="sub-greeting">كل الي هنا هيفضل بيني وبينك<br>طول العمر</div>
+
+            <!-- حقل كلمة المرور -->
+            <input type="password" class="password-input" id="passwordInput" placeholder="كلمة السر" value="">
+            <button class="password-btn" id="passwordBtn">يلا بسرعه افتحي😂❤️</button>
+            <div class="error-msg" id="passwordError"></div>
+        </div>
+
+        <!-- المحتوى السري (يظهر بعد كلمة السر) -->
+        <div class="secret-content" id="secretContent">
+            <!-- النص العلوي بعد فتح القفل -->
+            <div class="reveal">
+                <div class="love-text">الي من احب</div>
+                <div class="name">Rahma ❤️</div>
+            </div>
+
+            <!-- بداية العناصر التي تظهر بالتمرير -->
+            <div class="reveal">
+                <div class="card" style="text-align: center;">
+                    <div style="font-size:2rem;">📅</div>
+                    <div style="font-size:1.8rem; font-weight:bold;">يوم ما عرفنا بعض كان يوم ولادتي</div>
+                </div>
+            </div>
+
+            <div class="reveal">
+                <div class="card">
+                    <div style="font-size:1.8rem; text-align: center;">اول مره كلمنا بعض وموقفناش بعدها لحد ما وقعنا في الحب❤️</div>
+                    <div style="font-size:1.5rem; text-align: center; margin-top:15px; color:#b82b5e;">20\5\2023</div>
+                </div>
+            </div>
+
+            <div class="reveal">
+                <div class="card" style="text-align: center;">
+                    <div style="font-size:2rem;">بدايه عمري معاكي</div>
+                </div>
+            </div>
+
+            <!-- التايمر بشكل بوكسات منفصلة -->
+            <div class="reveal">
+                <div class="timer-box" style="background: #ffe6f0; border-radius: 30px; padding: 20px; text-align: center; border: 3px dashed #ff99bb;">
+                    <div class="timer-label" style="font-size:1.5rem; color:#a13565; margin-bottom:15px;">هيفضل شغال طول عمرنا</div>
+                    <div class="timer-container" id="timerContainer">
+                        <!-- يتم تعبئتها بواسطة الجافاسكريبت -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- إضافة "اول مره قولتلك بحبك" والتاريخ -->
+            <div class="reveal">
+                <div class="card" style="text-align: center;">
+                    <div style="font-size:2.2rem; margin-bottom:10px;">اول مره اعترفت ليكي بحبي❤️❤️</div>
+                    <div style="font-size:1.8rem; color:#b82b5e;">14/8/2023</div>
+                </div>
+            </div>
+
+            <div class="reveal">
+                <div class="card" style="text-align: center; background: #ffe0f0;">
+                    <div style="font-size:2rem;">اقفي هنا شويه رايحه فين😉❤️</div>
+                </div>
+            </div>
+
+            <!-- ثلاث بوكسات -->
+            <div class="reveal" style="display: flex; flex-direction: column; gap: 15px;">
+                <div class="card" style="text-align: center; background:#ffe6f0;">بحبك</div>
+                <div class="card" style="text-align: center; background:#ffd9e8;">يا اجمل بنت</div>
+                <div class="card" style="text-align: center; background:#ffcce0;">في الدنيا</div>
+            </div>
+
+            <div class="reveal">
+                <div class="card" style="text-align: center; font-size:2rem;">دوسي علي الكروت</div>
+            </div>
+
+            <!-- الكروت الأربعة التفاعلية -->
+            <div class="cards-grid">
+                <div class="flip-card" id="card1" onclick="flipCard(this)">
+                    <div class="flip-inner">
+                        <div class="flip-front">اول كارت اهووووو😂🙋‍♂️</div>
+                        <div class="flip-back">محبتش</div>
+                    </div>
+                </div>
+                <div class="flip-card" id="card2" onclick="flipCard(this)">
+                    <div class="flip-inner">
+                        <div class="flip-front">التاني</div>
+                        <div class="flip-back">ولا بحب</div>
+                    </div>
+                </div>
+                <div class="flip-card" id="card3" onclick="flipCard(this)">
+                    <div class="flip-inner">
+                        <div class="flip-front">التالت</div>
+                        <div class="flip-back">ولا هحب حد</div>
+                    </div>
+                </div>
+                <div class="flip-card" id="card4" onclick="flipCard(this)">
+                    <div class="flip-inner">
+                        <div class="flip-front">الرابع</div>
+                        <div class="flip-back">زي ما حبيتك يا اجمل حاجه في حياتي❤️</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal">
+                <div class="card" style="text-align: center; font-size:2.5rem;">حياتي باختصار</div>
+            </div>
+
+            <!-- شبكة الصور (8 صور) عمود واحد -->
+            <div class="image-grid" id="imageGrid">
+                <!-- الصورة 1 -->
+                <div class="image-card">
+                    <img src="https://i.supaimg.com/b3e8f798-2580-4a43-b860-7c71abdf9fbd/220b0335-62c4-42b7-8ef2-b00f1556b95b.jpg" alt="صورة">
+                    <div class="image-caption">❤️قرايه فاتحتنا وكان يوم تحفه</div>
+                </div>
+                <!-- الصورة 2 -->
+                <div class="image-card">
+                    <img src="https://i.supaimg.com/b3e8f798-2580-4a43-b860-7c71abdf9fbd/9b18dd92-f644-45ab-9a47-b66ab167970e.jpg" alt="صورة">
+                    <div class="image-caption">❤️هنا جبنا دهبك </div>
+                </div>
+                <!-- الصورة 3 -->
+                <div class="image-card">
+                    <img src="https://i.supaimg.com/b3e8f798-2580-4a43-b860-7c71abdf9fbd/f0337739-9a5d-4196-bf85-a37abafa2290.jpg" alt="صورة">
+                    <div class="image-caption">يوم الخطوبه😉❤️</div>
+                </div>
+                <!-- الصورة 4 -->
+                <div class="image-card">
+                    <img src="https://i.supaimg.com/b3e8f798-2580-4a43-b860-7c71abdf9fbd/55298ea3-921d-480f-b619-fcaa18b94da3.jpg" alt="صورة">
+                    <div class="image-caption">انا والقمر😉❤️</div>
+                </div>
+                <!-- الصورة 5 -->
+                <div class="image-card">
+                    <img src="https://i.supaimg.com/b3e8f798-2580-4a43-b860-7c71abdf9fbd/9bfe04ae-6daa-41fd-bcbe-61c35b4798d0.jpg" alt="صورة">
+                    <div class="image-caption">عمري ما كنت مبسوط زي ما انا معاكي دلوقتي❤️</div>
+                </div>
+                <!-- الصورة 6 -->
+                <div class="image-card">
+                    <img src="https://i.supaimg.com/b3e8f798-2580-4a43-b860-7c71abdf9fbd/a14cbe8e-ef86-4cfb-aa8c-c9eac8e4b5d8.jpg" alt="صورة">
+                    <div class="image-caption"> اخر يوم جامعه ليكي وبجد بجد انا مبسوط ان كنت معاكي اوي❤️❤️</div>
+                </div>
+                <!-- الصورة 7 -->
+                <div class="image-card">
+                    <img src="https://i.supaimg.com/b3e8f798-2580-4a43-b860-7c71abdf9fbd/6202c90f-32db-4e6c-b65d-6f3512a3304f.jpg" alt="صورة">
+                    <div class="image-caption"> وكنت مبسوط اكتر علشان حضرت تخرجك🌚❤️</div>
+                </div>
+                <!-- الصورة 8 -->
+                <div class="image-card">
+                    <img src="https://i.supaimg.com/b3e8f798-2580-4a43-b860-7c71abdf9fbd/7b8795e7-b539-4216-b145-84d5209f92a9.jpg" alt="صورة">
+                    <div class="image-caption"> بجد انت احلي حاجه شافتها عيني ومبسوط اوي ويابختي بوجدك معايا يا رورو❤️</div>
+                </div>
+            </div>
+
+            <!-- الزر الأخير والرسالة المخفية -->
+            <button class="final-btn" id="finalBtn">لسا مخلصتش دوسي هنا😂❤️</button>
+            <div class="hidden-message" id="hiddenMessage">
+                ربنا يخليكي ليا وميحرمنيش منك ابدا يا اغلي حاجه حصلتلي <br>ونفضل طول العمر مع بعض❤️<br><br>❤️بحبك❤️
+            </div>
+
+            <hr>
+            <div style="text-align: center; padding: 20px; color: #b82b5e;">لكِ مني كل الحب ❤️</div>
+        </div>
+    </div>
+
+<!-- شريط الصوت -->
+<div class="audio-player">
+    <audio controls autoplay loop id="bgMusic">
+        <source src="https://b.top4top.io/m_3708l0urz0.mp3" type="audio/mpeg">
+        متصفحك لا يدعم تشغيل الصوت.
+    </audio>
+</div>
+
+    <script>
+        // ******************** إعدادات عامة ********************
+        const CORRECT_PASSWORD = "love";
+        const START_DATE = new Date(2023, 4, 20); // 20 مايو 2023
+
+        // عناصر الصفحة
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainContent = document.getElementById('mainContent');
+        const passwordSection = document.getElementById('passwordSection');
+        const secretContent = document.getElementById('secretContent');
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordBtn = document.getElementById('passwordBtn');
+        const passwordError = document.getElementById('passwordError');
+        const finalBtn = document.getElementById('finalBtn');
+        const hiddenMsg = document.getElementById('hiddenMessage');
+        const timerContainer = document.getElementById('timerContainer');
+
+        // ******************** توليد القلوب في الخلفية ********************
+        function createHearts() {
+            const container = document.getElementById('heartsBg');
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-bg';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+                heart.style.opacity = Math.random() * 0.4 + 0.2;
+                container.appendChild(heart);
+            }
+        }
+        createHearts();
+
+        // ******************** إخفاء شاشة التحميل بعد 3 ثوانٍ ********************
+        setTimeout(() => {
+            loadingScreen.classList.add('hidden');
+            mainContent.style.opacity = '1';
+        }, 3000);
+
+        // ******************** التحقق من كلمة المرور ********************
+        function checkPassword() {
+            const entered = passwordInput.value.trim();
+            if (entered === CORRECT_PASSWORD) {
+                passwordError.innerText = '';
+                passwordSection.style.display = 'none';
+                secretContent.classList.add('visible');
+                startTimer();
+                initReveal();
+            } else {
+                passwordError.innerText = '❌ كلمة سر خطأ! حاول مرة أخرى.';
+            }
+        }
+
+        passwordBtn.addEventListener('click', checkPassword);
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkPassword();
+        });
+
+        // ******************** التايمر بشكل بوكسات منفصلة ********************
+        function updateTimer() {
+            const now = new Date();
+            let diff = now - START_DATE;
+            if (diff < 0) diff = 0;
+
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            const years = Math.floor(days / 365);
+            const remainingDaysAfterYears = days % 365;
+            const months = Math.floor(remainingDaysAfterYears / 30);
+            const remainingDays = remainingDaysAfterYears % 30;
+
+            const displayYears = years;
+            const displayMonths = months;
+            const displayDays = remainingDays;
+            const displayHours = hours % 24;
+            const displayMinutes = minutes % 60;
+            const displaySeconds = seconds % 60;
+
+            // إنشاء البوكسات
+            timerContainer.innerHTML = `
+                <div class="timer-unit"><div class="timer-number">${displayYears}</div><div class="timer-label-unit">سنة</div></div>
+                <div class="timer-unit"><div class="timer-number">${displayMonths}</div><div class="timer-label-unit">شهر</div></div>
+                <div class="timer-unit"><div class="timer-number">${displayDays}</div><div class="timer-label-unit">يوم</div></div>
+                <div class="timer-unit"><div class="timer-number">${displayHours}</div><div class="timer-label-unit">ساعة</div></div>
+                <div class="timer-unit"><div class="timer-number">${displayMinutes}</div><div class="timer-label-unit">دقيقة</div></div>
+                <div class="timer-unit"><div class="timer-number">${displaySeconds}</div><div class="timer-label-unit">ثانية</div></div>
+            `;
+        }
+
+        function startTimer() {
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // ******************** تأثير الظهور عند التمرير (Reveal) ********************
+        function initReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+
+            function checkReveal() {
+                for (let el of reveals) {
+                    const windowHeight = window.innerHeight;
+                    const revealTop = el.getBoundingClientRect().top;
+                    const revealPoint = 150;
+
+                    if (revealTop < windowHeight - revealPoint) {
+                        el.classList.add('active');
+                    }
+                }
+            }
+
+            window.addEventListener('scroll', checkReveal);
+            checkReveal();
+        }
+
+        // ******************** تفعيل البطاقات (flip) ********************
+        window.flipCard = function(card) {
+            card.classList.toggle('flipped');
+        };
+
+        // ******************** الزر الأخير والرسالة المخفية (بدون تأثير الكتابة، تظهر مباشرة) ********************
+        finalBtn.addEventListener('click', function() {
+            if (hiddenMsg.style.display === 'block') {
+                hiddenMsg.style.display = 'none';
+            } else {
+                hiddenMsg.style.display = 'block';
+            }
+        });
+
+        // ******************** استبدال الصور لاحقاً ********************
+        // مثال: 
+        // document.querySelectorAll('.image-card img')[0].src = 'رابط_صورتك1';
+        // document.querySelectorAll('.image-card img')[1].src = 'رابط_صورتك2';
+        // ...إلخ
+    </script>
+</body>
+                      </html>
